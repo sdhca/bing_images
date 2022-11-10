@@ -1,6 +1,7 @@
 from urllib.parse import quote
 import shutil
 from selenium import webdriver
+from selenium.webdriver.common.by import By
 import time
 import json
 
@@ -23,7 +24,7 @@ def image_url_from_webpage(driver, max_number=10000):
     img_count = 0
 
     while True:
-        image_elements = driver.find_elements_by_class_name("iusc")
+        image_elements = driver.find_elements(By.CLASS_NAME, "iusc")
         if len(image_elements) > max_number:
             break
         if len(image_elements) > img_count:
@@ -31,7 +32,7 @@ def image_url_from_webpage(driver, max_number=10000):
             driver.execute_script(
                 "window.scrollTo(0, document.body.scrollHeight);")
         else:
-            smb = driver.find_elements_by_class_name("btn_seemore")
+            smb = driver.find_elements(By.CLASS_NAMES, "btn_seemore")
             if len(smb) > 0 and smb[0].is_displayed():
                 smb[0].click()
             else:
@@ -51,6 +52,7 @@ def crawl_image_urls(keywords, filters, max_number=10000, proxy=None, proxy_type
     if proxy is not None and proxy_type is not None:
         chrome_options.add_argument(
             "--proxy-server={}://{}".format(proxy_type, proxy))
+    chrome_options.add_argument('--headless')
     driver = webdriver.Chrome(chrome_path, chrome_options=chrome_options)
 
     query_url = gen_query_url(keywords, filters, extra_query_params=extra_query_params)
