@@ -32,7 +32,7 @@ def image_url_from_webpage(driver, max_number=10000):
             driver.execute_script(
                 "window.scrollTo(0, document.body.scrollHeight);")
         else:
-            smb = driver.find_elements(By.CLASS_NAMES, "btn_seemore")
+            smb = driver.find_elements(By.CLASS_NAME, "btn_seemore")
             if len(smb) > 0 and smb[0].is_displayed():
                 smb[0].click()
             else:
